@@ -7,6 +7,7 @@ import VolunteerRequests from '../components/VolunteerRequests';
 import RequesterProfile from '../components/RequesterProfile';
 import CreateRequest from '../components/CreateRequest';
 import MyRequests from '../components/MyRequests';
+import AdminDashboard from '../components/AdminDashboard';
 
 function Dashboard() {
   const { user, loading, logout } = useAuth();
@@ -73,8 +74,8 @@ function Dashboard() {
 
       {user.role === 'admin' && (
         <div style={{ backgroundColor: '#242424', padding: '1.5rem', borderRadius: '8px' }}>
-          <h2 style={{ fontSize: '1.2rem' }}>Admin Dashboard</h2>
-          <p style={{ color: '#999' }}>System stats and management coming next.</p>
+          <h2 style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>Admin Dashboard</h2>
+          <AdminDashboard />
         </div>
       )}
     </div>
