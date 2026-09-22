@@ -127,7 +127,7 @@ function AdminDashboard() {
             {requests.map((r) => (
               <tr key={r.id}>
                 <td style={tdStyle}>{r.title}</td>
-                <td style={tdStyle}>{r.requester_name || '—'}</td>
+                <td style={tdStyle}>{r.requester_name || 'ï¿½'}</td>
                 <td style={tdStyle}>{r.status}</td>
                 <td style={tdStyle}>{r.created_at}</td>
               </tr>
@@ -161,7 +161,11 @@ function AdminDashboard() {
 
       {activeTab === 'skills' && (
         <div>
-          {message && <p style={{ color: '#7fd97f', fontSize: '0.9rem' }}>{message}</p>}
+          {message && (
+  <p style={{ color: message.includes('added') ? '#7fd97f' : '#ff6b6b', fontSize: '0.9rem' }}>
+    {message}
+  </p>
+)}
 
           <form onSubmit={handleAddSkill} style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
             <input
