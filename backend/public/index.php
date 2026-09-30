@@ -63,6 +63,28 @@ $app->get('/api/volunteers/skills', [VolunteerController::class, 'getSkills'])
 
 $app->post('/api/volunteers/skills', [VolunteerController::class, 'addSkill'])
     ->add(new AuthMiddleware(['volunteer']));
+   $app->post('/api/volunteers/skills/new', [VolunteerController::class, 'addNewSkill'])
+    ->add(new AuthMiddleware(['volunteer']));
+
+$app->post('/api/skills', function ($request, $response) {
+    $data = $request->getParsedBody();
+    $name = trim($data['name'] ?? '');
+
+    if (empty($name)) {
+        $response->getBody()->write(json_encode(['error' => 'A skill name is required']));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+    }
+
+    $existing = \App\Models\Skill::findByName($name);
+    if ($existing !== null) {
+        $response->getBody()->write(json_encode(['skill' => $existing]));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    }
+
+    $skillId = \App\Models\Skill::create($name);
+    $response->getBody()->write(json_encode(['skill' => ['id' => $skillId, 'name' => $name]]));
+    return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
+})->add(new AuthMiddleware(['individual', 'organization']));
 
 $app->delete('/api/volunteers/skills/{skillId}', [VolunteerController::class, 'removeSkill'])
     ->add(new AuthMiddleware(['volunteer']));

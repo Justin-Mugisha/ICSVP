@@ -97,6 +97,40 @@ class VolunteerController
             'skills' => $skills,
         ], 201);
     }
+        public function addNewSkill(Request $request, Response $response): Response
+    {
+        $userId = $_SESSION['user_id'];
+        $data = $request->getParsedBody();
+        $name = trim($data['name'] ?? '');
+
+        if (empty($name)) {
+            return $this->jsonResponse($response, ['error' => 'A skill name is required'], 400);
+        }
+
+        $profile = VolunteerProfile::findByUserId($userId);
+        if ($profile === null) {
+            return $this->jsonResponse($response, ['error' => 'Profile not found'], 404);
+        }
+
+        $skill = Skill::findByName($name);
+        if ($skill === null) {
+            $skillId = Skill::create($name);
+        } else {
+            $skillId = $skill['id'];
+        }
+
+        if (VolunteerSkill::hasSkill($profile['id'], $skillId)) {
+            return $this->jsonResponse($response, ['error' => 'You already have this skill listed'], 409);
+        }
+
+        VolunteerSkill::addSkill($profile['id'], $skillId);
+        $skills = VolunteerSkill::getSkillsForVolunteer($profile['id']);
+
+        return $this->jsonResponse($response, [
+            'message' => 'Skill added successfully',
+            'skills' => $skills,
+        ], 201);
+    }
 
     public function removeSkill(Request $request, Response $response, array $args): Response
     {

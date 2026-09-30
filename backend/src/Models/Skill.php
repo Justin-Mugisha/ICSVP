@@ -23,6 +23,15 @@ class Skill
         return $skill ?: null;
     }
 
+    public static function findByName(string $name): ?array
+    {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("SELECT * FROM skills WHERE name = :name LIMIT 1");
+        $stmt->execute(['name' => $name]);
+        $skill = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $skill ?: null;
+    }
+
     public static function create(string $name): int
     {
         $pdo = Database::getConnection();

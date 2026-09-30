@@ -16,6 +16,10 @@ export function addSkill(skillId) {
   return api.post('/volunteers/skills', { skill_id: skillId });
 }
 
+export function addNewSkill(name) {
+  return api.post('/volunteers/skills/new', { name: name });
+}
+
 export function removeSkill(skillId) {
   return api.delete('/volunteers/skills/' + skillId);
 }

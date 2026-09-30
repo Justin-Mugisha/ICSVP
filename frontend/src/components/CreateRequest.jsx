@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { createRequest } from '../services/requesterService';
-import { getAllSkills } from '../services/skillsService';
+import { getAllSkills, createSkillAsRequester } from '../services/skillsService';
 
 function CreateRequest({ onCreated }) {
   const [title, setTitle] = useState('');
@@ -9,6 +9,7 @@ function CreateRequest({ onCreated }) {
   const [selectedSkillIds, setSelectedSkillIds] = useState([]);
   const [message, setMessage] = useState('');
   const [saving, setSaving] = useState(false);
+    const [newSkillName, setNewSkillName] = useState('');
 
   useEffect(() => {
     getAllSkills().then((response) => setAllSkills(response.data.skills));
@@ -18,6 +19,20 @@ function CreateRequest({ onCreated }) {
     setSelectedSkillIds((prev) =>
       prev.includes(skillId) ? prev.filter((id) => id !== skillId) : [...prev, skillId]
     );
+  };
+    const handleAddNewSkill = async (e) => {
+    e.preventDefault();
+    if (!newSkillName.trim()) return;
+
+    try {
+      const response = await createSkillAsRequester(newSkillName.trim());
+      const skill = response.data.skill;
+      setAllSkills((prev) => (prev.some((s) => s.id === skill.id) ? prev : [...prev, skill]));
+      setSelectedSkillIds((prev) => (prev.includes(skill.id) ? prev : [...prev, skill.id]));
+      setNewSkillName('');
+    } catch (err) {
+      setMessage('Failed to add new skill.');
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -102,6 +117,33 @@ function CreateRequest({ onCreated }) {
               </button>
             );
           })}
+        </div>
+                <p style={{ fontSize: '0.8rem', color: '#999', marginBottom: '0.4rem' }}>
+          Skill not listed?
+        </p>
+        <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+          <input
+            type="text"
+            value={newSkillName}
+            onChange={(e) => setNewSkillName(e.target.value)}
+            placeholder="Type a new skill name"
+            style={{ ...inputStyle, flex: 1, marginBottom: 0 }}
+          />
+          <button
+            type="button"
+            onClick={handleAddNewSkill}
+            disabled={!newSkillName.trim()}
+            style={{
+              padding: '0.5rem 1rem',
+              backgroundColor: '#3a5a3a',
+              color: '#c3f0c3',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+          >
+            Add New Skill
+          </button>
         </div>
 
         <button

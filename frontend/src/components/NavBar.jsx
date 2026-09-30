@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import NotificationsBell from './NotificationsBell';
 
 function NavBar() {
   const { user } = useAuth();
@@ -20,9 +21,12 @@ function NavBar() {
       </Link>
 
       {user ? (
-        <Link to="/dashboard" style={{ color: '#4a7dff', textDecoration: 'none', fontSize: '0.9rem' }}>
-          Dashboard
-        </Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
+          <NotificationsBell />
+          <Link to="/dashboard" style={{ color: '#4a7dff', textDecoration: 'none', fontSize: '0.9rem' }}>
+            Dashboard
+          </Link>
+        </div>
       ) : (
         <div style={{ display: 'flex', gap: '1rem' }}>
           <Link to="/login" style={{ color: '#4a7dff', textDecoration: 'none', fontSize: '0.9rem' }}>

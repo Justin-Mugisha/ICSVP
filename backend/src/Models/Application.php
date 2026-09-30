@@ -51,7 +51,7 @@ class Application
 
         $sql = "SELECT a.id, a.status, a.created_at,
                         u.id AS volunteer_user_id, u.email,
-                        vp.full_name
+                        vp.full_name, vp.bio, vp.location
                  FROM applications a
                  JOIN users u ON a.volunteer_id = u.id
                  LEFT JOIN volunteer_profiles vp ON vp.user_id = u.id

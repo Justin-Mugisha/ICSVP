@@ -150,9 +150,14 @@ function MyRequests({ refreshKey }) {
                         marginBottom: '0.5rem',
                       }}
                     >
-                      <div>
+                                           <div>
                         <div style={{ fontSize: '0.9rem' }}>{m.full_name || m.email}</div>
                         <div style={{ fontSize: '0.75rem', color: '#999' }}>{m.email}</div>
+                        {m.bio && (
+                          <div style={{ fontSize: '0.75rem', color: '#bbb', marginTop: '0.2rem', maxWidth: '260px' }}>
+                            {m.bio}
+                          </div>
+                        )}
                       </div>
 
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }}>

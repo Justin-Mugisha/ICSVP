@@ -120,7 +120,6 @@ All routes are prefixed with `/api`. Everything except register and login requir
 
 ## Known Limitations
 
-- The frontend does not yet display notifications (the API and database side works)
 - Notifications are created on accept and reject only, not when a matching request is posted
 - Admins can view users and manage skills, but cannot yet deactivate users from the interface
 - Organizations are not verified; anyone can register as one
